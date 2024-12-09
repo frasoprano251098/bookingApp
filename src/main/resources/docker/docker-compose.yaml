@@ -1,22 +1,19 @@
-version: '3.9'
-
 services:
   postgres:
     image: postgres:15
-    container_name: postgres-booking-app
+    container_name: postgres
     restart: always
     environment:
-      POSTGRES_DB: bookingApp
       POSTGRES_USER: frasoprano
       POSTGRES_PASSWORD: frasoprano
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-
+      - ./init/init.sql:/docker-entrypoint-initdb.d/init.sql
   keycloak:
     image: quay.io/keycloak/keycloak:22.0.1
-    container_name: keycloak-booking-app
+    container_name: keycloak
     restart: always
     environment:
       KC_DB: postgres
@@ -25,13 +22,15 @@ services:
       KC_DB_URL_DATABASE: keycloak
       KC_DB_USERNAME: frasoprano
       KC_DB_PASSWORD: frasoprano
+      KC_HTTP_PORT: 8081
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
-      - "8080:8080"
-    command: start-dev
+      - "8081:8081"
+    command: ["start-dev", "--import-realm"]
     depends_on:
       - postgres
-
+    volumes:
+      - ./init/init_realm.json:/opt/keycloak/data/import/init_realm.json
 volumes:
   postgres_data:

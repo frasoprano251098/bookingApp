@@ -1,0 +1,5 @@
+DROP DATABASE IF EXISTS booking_app;
+CREATE DATABASE booking_app;
+
+DROP DATABASE IF EXISTS keycloak;
+CREATE DATABASE keycloak;
