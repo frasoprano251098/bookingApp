@@ -1,0 +1,100 @@
+
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd">
+
+    <changeSet id="1" author="francesco.soprano">
+        <createTable tableName="rooms">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="capacity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2" author="francesco.soprano">
+        <createTable tableName="bookings">
+            <column name="id" type="SERIAL">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="room_id" type="INT">
+                <constraints nullable="false" foreignKeyName="fk_bookings_rooms" referencedTableName="rooms" referencedColumnNames="id"/>
+            </column>
+            <column name="start_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="end_time" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="seats" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addUniqueConstraint tableName="bookings"
+                             columnNames="room_id, start_time, end_time"
+                             constraintName="unique_room_time"/>
+        <addUniqueConstraint tableName="bookings"
+                             columnNames="username, start_time, end_time"
+                             constraintName="unique_user_time"/>
+    </changeSet>
+
+    <changeSet id="3" author="francesco.soprano">
+        <createIndex tableName="bookings" indexName="idx_bookings_start_time">
+            <column name="start_time"/>
+        </createIndex>
+        <createIndex tableName="bookings" indexName="idx_bookings_end_time">
+            <column name="end_time"/>
+        </createIndex>
+        <createIndex tableName="bookings" indexName="idx_bookings_username">
+            <column name="username"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="4" author="francesco.soprano">
+        <insert tableName="rooms">
+            <column name="name" value="Room A"/>
+            <column name="capacity" valueNumeric="10"/>
+        </insert>
+        <insert tableName="rooms">
+            <column name="name" value="Room B"/>
+            <column name="capacity" valueNumeric="20"/>
+        </insert>
+        <insert tableName="rooms">
+            <column name="name" value="Room C"/>
+            <column name="capacity" valueNumeric="15"/>
+        </insert>
+
+        <insert tableName="bookings">
+            <column name="username" value="book-user"/>
+            <column name="room_id" valueNumeric="1"/>
+            <column name="start_time" valueDate="2024-12-09T10:00:00"/>
+            <column name="end_time" valueDate="2024-12-09T12:00:00"/>
+            <column name="seats" valueNumeric="8"/>
+        </insert>
+        <insert tableName="bookings">
+            <column name="username" value="book-user"/>
+            <column name="room_id" valueNumeric="2"/>
+            <column name="start_time" valueDate="2024-12-10T14:00:00"/>
+            <column name="end_time" valueDate="2024-12-10T15:30:00"/>
+            <column name="seats" valueNumeric="18"/>
+        </insert>
+        <insert tableName="bookings">
+            <column name="username" value="book-admin"/>
+            <column name="room_id" valueNumeric="3"/>
+            <column name="start_time" valueDate="2024-12-11T09:00:00"/>
+            <column name="end_time" valueDate="2024-12-11T10:30:00"/>
+            <column name="seats" valueNumeric="12"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

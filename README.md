@@ -36,4 +36,4 @@ This setup includes:
 ## Run Instructions
 Navigate to the `src/main/resources/docker` directory:
 ```bash
-podman compose up --d // docker compose up -d
+podman compose up -d // docker compose up -d
