@@ -32,6 +32,8 @@ This setup includes:
     - Password: `frasoprano`
 
 ---
+### Swagger UI
+- **URL**: [http://localhost:8080/swagger-ui/index.html](http://localhost:8080/swagger-ui/index.html)
 
 ## Run Instructions
 Navigate to the `src/main/resources/docker` directory:
