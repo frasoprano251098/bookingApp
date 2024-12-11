@@ -32,5 +32,6 @@ services:
       - postgres
     volumes:
       - ./init/init_realm.json:/opt/keycloak/data/import/init_realm.json
+      #- ./export:/opt/keycloak/data
 volumes:
   postgres_data:

@@ -102,7 +102,7 @@
 					"response": []
 				},
 				{
-					"name": "all rooms",
+					"name": "room by id",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -119,6 +119,38 @@
 						}
 					},
 					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{access_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -175,7 +207,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"startTime\": \"2024-12-10T09:00:53.658Z\",\r\n  \"endTime\": \"2024-12-10T18:56:53.658Z\",\r\n  \"seats\": 2\r\n}",
+							"raw": "{\r\n  \"startTime\": \"2024-12-13T09:00:53.658Z\",\r\n  \"endTime\": \"2024-12-13T18:56:53.658Z\",\r\n  \"seats\": 0\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -215,10 +247,58 @@
 					},
 					"response": []
 				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{access_token}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
 			]
 		},
 		{
 			"name": "obtain token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							" pm.test(\"get token\",  ()=> {\r",
+							"    const jsonResponse = pm.response.json();\r",
+							"    pm.collectionVariables.set(\"access_token\", jsonResponse.access_token);\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [],
@@ -311,6 +391,10 @@
 			"key": "password",
 			"value": "book-admin",
 			"type": "string"
+		},
+		{
+			"key": "access_token",
+			"value": ""
 		}
 	]
 }
