@@ -7,7 +7,6 @@ import com.soprano.francesco.mappers.BookingMapper;
 import com.soprano.francesco.repositories.BookingRepository;
 import com.soprano.francesco.repositories.RoomRepository;
 import com.soprano.francesco.rest.dtos.requests.AvailabilityRequest;
-import com.soprano.francesco.rest.dtos.responses.AvailabilityResponse;
 import com.soprano.francesco.rest.dtos.requests.BookingRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class BookingService {
@@ -56,8 +54,8 @@ public class BookingService {
     }
 
     private boolean checkAvailability(Room room, LocalDateTime startTime, LocalDateTime endTime, int seats) {
-        List<Booking> conflictingBookings = bookingRepository.findBookingsInTimeRange(room.getId(), startTime, endTime);
-        return conflictingBookings.isEmpty() && room.getCapacity() >= seats;
+        List<Room> availableRooms = roomRepository.getAvailableRooms(startTime, endTime, seats);
+        return availableRooms.stream().anyMatch(r -> r.getId().equals(room.getId()));
     }
 
     public List<Booking> getUserBookings(String username) {
@@ -68,12 +66,11 @@ public class BookingService {
         return bookingRepository.findByRoomId(roomId);
     }
 
-    public List<AvailabilityResponse> getAvailableRooms(AvailabilityRequest availabilityRequest) {
-        List<Room> rooms = roomRepository.findAll();
-        return rooms.stream()
-                .filter(room -> checkAvailability(room, availabilityRequest.getStartTime(), availabilityRequest.getEndTime(), availabilityRequest.getSeats()))
-                .map(room -> new AvailabilityResponse(room.getId(), room.getName(), room.getCapacity()))
-                .collect(Collectors.toList());
+    public List<Room> getAvailableRooms(AvailabilityRequest availabilityRequest) {
+        return roomRepository.getAvailableRooms(
+                availabilityRequest.getStartTime(),
+                availabilityRequest.getEndTime(),
+                availabilityRequest.getSeats());
     }
 
     @Transactional

@@ -1,10 +1,10 @@
 package com.soprano.francesco.rest.contollers;
 
 import com.soprano.francesco.entities.Booking;
+import com.soprano.francesco.entities.Room;
 import com.soprano.francesco.exceptions.RoomNotAvailableException;
 import com.soprano.francesco.rest.dtos.requests.AvailabilityRequest;
 import com.soprano.francesco.rest.dtos.requests.BookingRequest;
-import com.soprano.francesco.rest.dtos.responses.AvailabilityResponse;
 import com.soprano.francesco.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,13 +29,10 @@ public class BookingController {
     public ResponseEntity<Object> createBooking(@RequestBody BookingRequest bookingRequest) {
         Optional<Booking> bookingOptional = bookingService.createBooking(bookingRequest);
 
-        if (bookingOptional.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Room not found.");
-        }
+        return bookingOptional.<ResponseEntity<Object>>map(booking -> ResponseEntity.status(HttpStatus.CREATED)
+                .body(booking)).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body("Room not found."));
 
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(bookingOptional.get());
     }
 
     @GetMapping("/user/{username}")
@@ -55,8 +52,8 @@ public class BookingController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<AvailabilityResponse>> getAvailableRooms(@RequestBody AvailabilityRequest availabilityRequest) {
-        List<AvailabilityResponse> availableRooms = bookingService.getAvailableRooms(availabilityRequest);
+    public ResponseEntity<List<Room>> getAvailableRooms(@RequestBody AvailabilityRequest availabilityRequest) {
+        List<Room> availableRooms = bookingService.getAvailableRooms(availabilityRequest);
         return availableRooms.isEmpty() ?
                 ResponseEntity.status(HttpStatus.NOT_FOUND).body(availableRooms) :
                 ResponseEntity.ok(availableRooms);

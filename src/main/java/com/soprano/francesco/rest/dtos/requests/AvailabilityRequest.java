@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AvailabilityRequest {
-    private Long roomId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private int seats;

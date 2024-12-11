@@ -1,0 +1,316 @@
+{
+	"info": {
+		"_postman_id": "dc47be96-052e-4e51-bd11-30997606a560",
+		"name": "BookingApp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40355088"
+	},
+	"item": [
+		{
+			"name": "Rooms",
+			"item": [
+				{
+					"name": "create room",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Room D\",\r\n  \"capacity\": 25\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app-url}}/api/rooms",
+							"host": [
+								"{{app-url}}"
+							],
+							"path": [
+								"api",
+								"rooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update room",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"name\": \"Room AS\",\r\n  \"capacity\": 25\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app-url}}/api/rooms/1",
+							"host": [
+								"{{app-url}}"
+							],
+							"path": [
+								"api",
+								"rooms",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete room",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app-url}}/api/rooms/1",
+							"host": [
+								"{{app-url}}"
+							],
+							"path": [
+								"api",
+								"rooms",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all rooms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app-url}}/api/rooms",
+							"host": [
+								"{{app-url}}"
+							],
+							"path": [
+								"api",
+								"rooms"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all rooms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app-url}}/api/rooms/1",
+							"host": [
+								"{{app-url}}"
+							],
+							"path": [
+								"api",
+								"rooms",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bookings",
+			"item": [
+				{
+					"name": "booking by room id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app-url}}/api/bookings/room/2",
+							"host": [
+								"{{app-url}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								"room",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "booking by username",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{app-url}}/api/bookings/user/book-user",
+							"host": [
+								"{{app-url}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								"user",
+								"book-user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "check availabity",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"startTime\": \"2024-12-10T09:00:53.658Z\",\r\n  \"endTime\": \"2024-12-10T18:56:53.658Z\",\r\n  \"seats\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{app-url}}/api/bookings/available",
+							"host": [
+								"{{app-url}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								"available"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete booking",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{app-url}}/api/bookings/1",
+							"host": [
+								"{{app-url}}"
+							],
+							"path": [
+								"api",
+								"bookings",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "obtain token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "grant_type",
+							"value": "password",
+							"type": "text"
+						},
+						{
+							"key": "client_id",
+							"value": "postman",
+							"type": "text"
+						},
+						{
+							"key": "client_secret",
+							"value": "i9FCNczdY9auuzLaxABdiadqkgJjSUyI",
+							"type": "text"
+						},
+						{
+							"key": "username",
+							"value": "{{username}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{keycloak-url}}/realms/booking_app/protocol/openid-connect/token",
+					"host": [
+						"{{keycloak-url}}"
+					],
+					"path": [
+						"realms",
+						"booking_app",
+						"protocol",
+						"openid-connect",
+						"token"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "app-url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		},
+		{
+			"key": "keycloak-url",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "username",
+			"value": "book-admin",
+			"type": "string"
+		},
+		{
+			"key": "password",
+			"value": "book-admin",
+			"type": "string"
+		}
+	]
+}
