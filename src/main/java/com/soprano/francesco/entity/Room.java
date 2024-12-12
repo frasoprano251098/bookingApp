@@ -1,4 +1,4 @@
-package com.soprano.francesco.entities;
+package com.soprano.francesco.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

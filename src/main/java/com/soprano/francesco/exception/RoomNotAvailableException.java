@@ -1,4 +1,4 @@
-package com.soprano.francesco.exceptions;
+package com.soprano.francesco.exception;
 
 public class RoomNotAvailableException extends RuntimeException {
     public RoomNotAvailableException(String message) {

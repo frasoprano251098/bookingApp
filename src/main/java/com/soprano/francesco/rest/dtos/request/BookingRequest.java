@@ -1,4 +1,4 @@
-package com.soprano.francesco.rest.dtos.requests;
+package com.soprano.francesco.rest.dtos.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

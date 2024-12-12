@@ -1,11 +1,9 @@
-package com.soprano.francesco.rest.contollers;
+package com.soprano.francesco.rest.contoller;
 
-import com.soprano.francesco.entities.Booking;
-import com.soprano.francesco.entities.Room;
-import com.soprano.francesco.exceptions.OwnerBookingException;
-import com.soprano.francesco.exceptions.RoomNotAvailableException;
-import com.soprano.francesco.rest.dtos.requests.BookingRequest;
-import com.soprano.francesco.services.BookingService;
+import com.soprano.francesco.entity.Booking;
+import com.soprano.francesco.exception.OwnerBookingException;
+import com.soprano.francesco.rest.dtos.request.BookingRequest;
+import com.soprano.francesco.service.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

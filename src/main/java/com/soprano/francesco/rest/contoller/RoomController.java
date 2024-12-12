@@ -1,11 +1,9 @@
-package com.soprano.francesco.rest.contollers;
+package com.soprano.francesco.rest.contoller;
 
-import com.soprano.francesco.entities.Room;
-import com.soprano.francesco.rest.dtos.requests.AvailabilityRequest;
-import com.soprano.francesco.services.RoomService;
+import com.soprano.francesco.entity.Room;
+import com.soprano.francesco.rest.dtos.request.AvailabilityRequest;
+import com.soprano.francesco.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

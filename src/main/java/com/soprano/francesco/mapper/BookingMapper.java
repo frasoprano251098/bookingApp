@@ -1,7 +1,7 @@
-package com.soprano.francesco.mappers;
+package com.soprano.francesco.mapper;
 
-import com.soprano.francesco.entities.Booking;
-import com.soprano.francesco.rest.dtos.requests.BookingRequest;
+import com.soprano.francesco.entity.Booking;
+import com.soprano.francesco.rest.dtos.request.BookingRequest;
 import org.springframework.stereotype.Component;
 
 @Component

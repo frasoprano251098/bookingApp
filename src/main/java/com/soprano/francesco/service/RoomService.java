@@ -1,10 +1,10 @@
-package com.soprano.francesco.services;
+package com.soprano.francesco.service;
 
-import com.soprano.francesco.entities.Booking;
-import com.soprano.francesco.entities.Room;
-import com.soprano.francesco.repositories.BookingRepository;
-import com.soprano.francesco.repositories.RoomRepository;
-import com.soprano.francesco.rest.dtos.requests.AvailabilityRequest;
+import com.soprano.francesco.entity.Booking;
+import com.soprano.francesco.entity.Room;
+import com.soprano.francesco.repository.BookingRepository;
+import com.soprano.francesco.repository.RoomRepository;
+import com.soprano.francesco.rest.dtos.request.AvailabilityRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

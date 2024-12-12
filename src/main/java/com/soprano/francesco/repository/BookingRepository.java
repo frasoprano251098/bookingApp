@@ -1,11 +1,9 @@
-package com.soprano.francesco.repositories;
+package com.soprano.francesco.repository;
 
-import com.soprano.francesco.entities.Booking;
+import com.soprano.francesco.entity.Booking;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
