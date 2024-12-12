@@ -31,11 +31,11 @@ public class SecurityConfig {
         return http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/api/rooms/**").hasAuthority("admin")
                                 .requestMatchers(HttpMethod.POST, "/api/bookings").hasAnyAuthority("admin","user")
                                 .requestMatchers(HttpMethod.DELETE, "/api/bookings/**").hasAnyAuthority("admin","user")
-                                .requestMatchers(HttpMethod.GET, "/api/bookings/available").hasAnyAuthority("admin","user")
-                                .requestMatchers(HttpMethod.GET, "/api/bookings/**").hasAnyAuthority("admin","user")
+                                .requestMatchers(HttpMethod.GET, "/api/rooms/available").hasAnyAuthority("admin","user")
+                                .requestMatchers(HttpMethod.GET,"/api/bookings").hasAuthority("admin")
+                                .requestMatchers("/api/rooms/**").hasAuthority("admin")
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()
                 ).sessionManagement(sessionManagement ->
@@ -66,7 +66,17 @@ public class SecurityConfig {
 
     @Bean
     public Jwt2AuthenticationConverter authenticationConverter(Jwt2AuthoritiesConverter authoritiesConverter) {
-        return jwt -> new JwtAuthenticationToken(jwt, authoritiesConverter.convert(jwt));
+        return jwt -> {
+            String username = jwt.getClaimAsString("preferred_username");
+            if (username == null || username.isEmpty()) {
+                username = jwt.getClaimAsString("sub");
+            }
+
+            JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(jwt, authoritiesConverter.convert(jwt));
+            authenticationToken.setDetails(username); //
+
+            return authenticationToken;
+        };
     }
 
 

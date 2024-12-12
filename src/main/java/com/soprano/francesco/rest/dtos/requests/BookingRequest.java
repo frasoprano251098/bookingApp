@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class BookingRequest {
     private Long roomId;
-    private String username;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private int seats;

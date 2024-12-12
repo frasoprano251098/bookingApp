@@ -9,7 +9,6 @@ public class BookingMapper {
 
     public Booking toEntity(BookingRequest bookingRequest) {
         Booking booking = new Booking();
-        booking.setUsername(bookingRequest.getUsername());
         booking.setStartTime(bookingRequest.getStartTime());
         booking.setEndTime(bookingRequest.getEndTime());
         booking.setSeats(bookingRequest.getSeats());

@@ -2,16 +2,17 @@ package com.soprano.francesco.services;
 
 import com.soprano.francesco.entities.Booking;
 import com.soprano.francesco.entities.Room;
+import com.soprano.francesco.exceptions.OwnerBookingException;
 import com.soprano.francesco.exceptions.RoomNotAvailableException;
 import com.soprano.francesco.mappers.BookingMapper;
 import com.soprano.francesco.repositories.BookingRepository;
 import com.soprano.francesco.repositories.RoomRepository;
-import com.soprano.francesco.rest.dtos.requests.AvailabilityRequest;
 import com.soprano.francesco.rest.dtos.requests.BookingRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.Book;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -32,8 +33,12 @@ public class BookingService {
         this.bookingMapper = bookingMapper;
     }
 
+    public List<Booking> getAllBookings() {
+        return bookingRepository.findAll();
+    }
+
     @Transactional
-    public Optional<Booking> createBooking(BookingRequest bookingRequest) {
+    public Optional<Booking> createBooking(BookingRequest bookingRequest, String username) throws RoomNotAvailableException {
         Optional<Room> roomOptional = roomRepository.findById(bookingRequest.getRoomId());
         if (roomOptional.isEmpty()) {
             return Optional.empty();
@@ -48,14 +53,10 @@ public class BookingService {
 
         Booking booking = bookingMapper.toEntity(bookingRequest);
         booking.setRoom(room);
+        booking.setUsername(username);
         bookingRepository.save(booking);
 
         return Optional.of(booking);
-    }
-
-    private boolean checkAvailability(Room room, LocalDateTime startTime, LocalDateTime endTime, int seats) {
-        List<Room> availableRooms = roomRepository.getAvailableRooms(startTime, endTime, seats);
-        return availableRooms.stream().anyMatch(r -> r.getId().equals(room.getId()));
     }
 
     public List<Booking> getUserBookings(String username) {
@@ -66,22 +67,24 @@ public class BookingService {
         return bookingRepository.findByRoomId(roomId);
     }
 
-    public List<Room> getAvailableRooms(AvailabilityRequest availabilityRequest) {
-        return roomRepository.getAvailableRooms(
-                availabilityRequest.getStartTime(),
-                availabilityRequest.getEndTime(),
-                availabilityRequest.getSeats());
-    }
-
     @Transactional
-    public boolean cancelBooking(Long bookingId) {
+    public boolean deleteBooking(Long bookingId, String username) throws OwnerBookingException {
         Optional<Booking> bookingOptional = bookingRepository.findById(bookingId);
         if (bookingOptional.isEmpty()) {
             return false;
         }
 
+        if( !username.equals("book-admin") && !bookingOptional.get().getUsername().equals(username)){
+            throw new OwnerBookingException("You are not the owner of this booking.");
+        }
+
         bookingRepository.delete(bookingOptional.get());
         return true;
+    }
+
+    private boolean checkAvailability(Room room, LocalDateTime startTime, LocalDateTime endTime, int seats) {
+        List<Room> availableRooms = roomRepository.getAvailableRooms(startTime, endTime, seats);
+        return availableRooms.stream().anyMatch(r -> r.getId().equals(room.getId()));
     }
 }
 

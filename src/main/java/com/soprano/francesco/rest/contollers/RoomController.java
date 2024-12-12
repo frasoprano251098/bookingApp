@@ -1,8 +1,11 @@
 package com.soprano.francesco.rest.contollers;
 
 import com.soprano.francesco.entities.Room;
+import com.soprano.francesco.rest.dtos.requests.AvailabilityRequest;
 import com.soprano.francesco.services.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,6 +43,14 @@ public class RoomController {
                 .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 
+    @GetMapping("/available")
+    public ResponseEntity<List<Room>> getAvailableRooms(@RequestBody AvailabilityRequest availabilityRequest) {
+        List<Room> availableRooms = roomService.getAvailableRooms(availabilityRequest);
+        return availableRooms.isEmpty() ?
+                ResponseEntity.status(HttpStatus.NOT_FOUND).body(availableRooms) :
+                ResponseEntity.ok(availableRooms);
+    }
+
     @PostMapping
     public ResponseEntity<Room> createRoom(@RequestBody Room room) {
         Room createdRoom = roomService.createRoom(room);
@@ -54,11 +65,16 @@ public class RoomController {
     }
 
     @DeleteMapping("/{roomId}")
-    public ResponseEntity<Void> deleteRoom(@PathVariable Long roomId) {
-        if (roomService.deleteRoom(roomId)) {
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    public ResponseEntity<?> deleteRoom(@PathVariable Long roomId) {
+        Optional<Boolean> isDeleted = roomService.deleteRoom(roomId);
+
+        if(isDeleted.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("You can't delete this room");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+
+        return isDeleted.get() ?
+                ResponseEntity.status(HttpStatus.NO_CONTENT).build() :
+                ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
 
