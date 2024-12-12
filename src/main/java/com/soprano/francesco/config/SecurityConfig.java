@@ -27,7 +27,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, Jwt2AuthenticationConverter authenticationConverter, ServerProperties serverProperties) throws Exception {
-
         return http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
@@ -35,6 +34,8 @@ public class SecurityConfig {
                                 .requestMatchers(HttpMethod.DELETE, "/api/bookings/**").hasAnyAuthority("admin","user")
                                 .requestMatchers(HttpMethod.GET, "/api/rooms/available").hasAnyAuthority("admin","user")
                                 .requestMatchers(HttpMethod.GET,"/api/bookings").hasAuthority("admin")
+                                .requestMatchers(HttpMethod.GET,"/api/bookings/user/**").hasAuthority("admin")
+                                .requestMatchers(HttpMethod.GET,"/api/bookings/room/**").hasAnyAuthority("admin","user")
                                 .requestMatchers("/api/rooms/**").hasAuthority("admin")
                                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()
@@ -73,7 +74,7 @@ public class SecurityConfig {
             }
 
             JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(jwt, authoritiesConverter.convert(jwt));
-            authenticationToken.setDetails(username); //
+            authenticationToken.setDetails(username);
 
             return authenticationToken;
         };

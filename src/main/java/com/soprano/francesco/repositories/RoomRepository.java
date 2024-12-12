@@ -12,7 +12,7 @@ import java.util.List;
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query(value =  "SELECT * FROM rooms r " +
-                    "WHERE ( r.capacity <= :seats ) OR " +
+                    "WHERE ( :seats <= r.capacity ) AND " +
                             "NOT EXISTS (SELECT 1 " +
                                          "FROM bookings b WHERE b.room_id = r.id AND ( " +
                                          " :startTime < b.end_time AND :endTime <= b.start_time ))", nativeQuery = true)
