@@ -74,7 +74,10 @@ public class BookingService {
             return false;
         }
 
-        if( !username.equals("book-admin") && !bookingOptional.get().getUsername().equals(username)){
+        boolean isAdmin = username.equals("book-admin");
+        boolean isOwner = bookingOptional.get().getUsername().equals(username);
+
+        if( !isAdmin && !isOwner){
             throw new OwnerBookingException("You are not the owner of this booking.");
         }
 
