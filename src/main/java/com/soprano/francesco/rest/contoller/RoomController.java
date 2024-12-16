@@ -1,7 +1,7 @@
 package com.soprano.francesco.rest.contoller;
 
 import com.soprano.francesco.entity.Room;
-import com.soprano.francesco.rest.dtos.request.AvailabilityRequest;
+import com.soprano.francesco.rest.dtos.request.BookingSearchRequest;
 import com.soprano.francesco.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,8 +42,8 @@ public class RoomController {
     }
 
     @GetMapping("/available")
-    public ResponseEntity<List<Room>> getAvailableRooms(@RequestBody AvailabilityRequest availabilityRequest) {
-        List<Room> availableRooms = roomService.getAvailableRooms(availabilityRequest);
+    public ResponseEntity<List<Room>> getAvailableRooms(@RequestBody BookingSearchRequest bookingSearchRequest) {
+        List<Room> availableRooms = roomService.getAvailableRooms(bookingSearchRequest);
         return availableRooms.isEmpty() ?
                 ResponseEntity.status(HttpStatus.NOT_FOUND).body(availableRooms) :
                 ResponseEntity.ok(availableRooms);

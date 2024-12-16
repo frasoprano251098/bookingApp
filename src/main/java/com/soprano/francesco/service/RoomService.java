@@ -4,7 +4,7 @@ import com.soprano.francesco.entity.Booking;
 import com.soprano.francesco.entity.Room;
 import com.soprano.francesco.repository.BookingRepository;
 import com.soprano.francesco.repository.RoomRepository;
-import com.soprano.francesco.rest.dtos.request.AvailabilityRequest;
+import com.soprano.francesco.rest.dtos.request.BookingSearchRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -33,11 +33,11 @@ public class RoomService {
         return roomRepository.findById(roomId);
     }
 
-    public List<Room> getAvailableRooms(AvailabilityRequest availabilityRequest) {
+    public List<Room> getAvailableRooms(BookingSearchRequest bookingSearchRequest) {
         return roomRepository.getAvailableRooms(
-                availabilityRequest.getStartTime(),
-                availabilityRequest.getEndTime(),
-                availabilityRequest.getSeats());
+                bookingSearchRequest.getStartTime(),
+                bookingSearchRequest.getEndTime(),
+                bookingSearchRequest.getSeats());
     }
 
     public Room createRoom(Room room) {

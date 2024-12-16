@@ -5,16 +5,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookingRequest {
+public class BookingRequest extends BookingSearchRequest {
     private Long roomId;
-    private LocalDateTime startTime;
-    private LocalDateTime endTime;
-    private int seats;
 }
 

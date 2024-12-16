@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class AvailabilityRequest {
+public class BookingSearchRequest {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private int seats;
